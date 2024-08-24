@@ -1,0 +1,239 @@
+*{
+    font-family: 'Tajawal', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+  
+    body{
+        height: auto;
+        display: flex;
+        justify-content: center;
+        width: 100%;
+    }
+    #__back{
+        width: 120px;
+        height: 40px;
+        border: #c0392b 2px solid ;
+        background: #111;
+        color: #e8e8e8;
+        border-radius: 12px ;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 16px;
+        text-decoration: none;
+    }
+    #___output{
+        width: 40%;
+
+        margin-bottom: 24px;
+        height: 350px;
+        border: #2ecc71 2px solid;
+        border-radius: 12px;
+        box-shadow: 0 0 10px #555;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #121212;
+    }
+
+    .success-alert {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #2ecc71; /* لون أخضر */
+        color: #fff; /* نص أبيض */
+        padding: 10px 20px;
+        border-radius: 5px;
+        font-size: 16px;
+        font-weight: bold;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        width: 60%; /* عرض التنبيه */
+        max-width: 500px; /* العرض الأقصى */
+        margin: 20px auto; /* توسيط التنبيه */
+    }
+    .success-alert i {
+        margin-right: 10px; /* مسافة بين الأيقونة والنص */
+    }
+    h2 {
+        color: #e74c3c;
+        text-align: center;
+    }
+    input[type="text"],
+    textarea {
+        width: 100%;
+        /* padding: 10px 10px 10px 30px; */
+        padding-top: 20px;
+        /* مساحة لظهور الأيقونة */
+        margin-bottom: 20px;
+        border: 1px solid #555;
+        border-radius: 5px;
+        background-color: #333;
+        color: #fff;
+    }
+    form {
+        background-color: #222;
+        padding: 10px;
+        border-radius: 12px;
+        height: auto;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.7);
+        width: 60%;
+    }
+    input[type="submit"]:hover {
+        background-color: #c0392b;
+    
+        /* تدرج أحمر أغمق عند التمرير */
+    }
+    label {
+        display: block;
+        margin-bottom: 10px;
+        font-weight: bold;
+        color: #e74c3c;
+    }
+    input[type="submit"] {
+        background-color: #e74c3c;
+        /* لون زر أحمر */
+        color: #fff;
+        padding: 10px 15px;
+        border: none;
+        border-radius: 5px;
+        width: 100%;
+        cursor: pointer;
+        font-size: 16px;
+        transition: background-color 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+@media only screen and (max-width: 1080px){
+    
+    
+    body{
+        height: auto;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        width: 100%;
+    }
+    #__back{
+        width: 120px;
+        height: 40px;
+        border: #c0392b 2px solid ;
+        background: #111;
+        color: #e8e8e8;
+        border-radius: 12px ;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 16px;
+        text-decoration: none;
+    }
+    .success-alert {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #2ecc71; /* لون أخضر */
+        color: #fff; /* نص أبيض */
+        padding: 10px 20px;
+        border-radius: 5px;
+        font-size: 16px;
+        font-weight: bold;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        width: 60%; /* عرض التنبيه */
+        max-width: 500px; /* العرض الأقصى */
+        margin: 20px auto; /* توسيط التنبيه */
+    }
+    
+    .success-alert i {
+        margin-right: 10px; /* مسافة بين الأيقونة والنص */
+    }
+    h2 {
+        color: #e74c3c;
+        text-align: center;
+    }
+    
+    form {
+        background-color: #222;
+        padding: 10px;
+        border-radius: 12px;
+        height: auto;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.7);
+        width: 95%;
+    }
+    
+    label {
+        display: block;
+        margin-bottom: 10px;
+        font-weight: bold;
+        color: #e74c3c;
+    }
+    
+    .input-group {
+        position: relative;
+        margin-bottom: 10px;
+    }
+    
+    .input-group i {
+        position: absolute;
+        top: 50%;
+        left: 10px;
+        transform: translateY(-50%);
+        color: #e74c3c;
+        /* لون أيقونة أحمر */
+    }
+    
+    input[type="text"],
+    textarea {
+        width: 100%;
+        /* padding: 10px 10px 10px 30px; */
+        padding-top: 20px;
+        /* مساحة لظهور الأيقونة */
+        margin-bottom: 20px;
+        border: 1px solid #555;
+        border-radius: 5px;
+        background-color: #333;
+        color: #fff;
+    }
+    
+    input[type="submit"] {
+        background-color: #e74c3c;
+        /* لون زر أحمر */
+        color: #fff;
+        padding: 10px 15px;
+        border: none;
+        border-radius: 5px;
+        width: 100%;
+        cursor: pointer;
+        font-size: 16px;
+        transition: background-color 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    input[type="submit"] i {
+        margin-left: 5px;
+    
+        /* مسافة بين النص والأيقونة */
+    }
+    
+    input[type="submit"]:hover {
+        background-color: #c0392b;
+    
+        /* تدرج أحمر أغمق عند التمرير */
+    }
+    #___output{
+        margin-top: 16px;
+        width: 90%;
+        margin-bottom: 24px;
+        height: 350px;
+        border: #2ecc71 2px solid;
+        border-radius: 12px;
+        box-shadow: 0 0 10px #555;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #121212;
+    }
+}
