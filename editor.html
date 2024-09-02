@@ -1,12 +1,10 @@
-
-
 <!DOCTYPE html>
 <html lang="ar">
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="style.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>إضافة بيانات الزر</title>
+    <title>kodati</title>
 
     <!-- استيراد خط Tajawal من Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
@@ -17,27 +15,34 @@
     <!-- استيراد CodeMirror -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.1/codemirror.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.1/theme/dracula.min.css">
+    
+    <!-- إضافة CSS الخاص بالإكمال التلقائي -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.1/addon/hint/show-hint.min.css">
+
 
 </head>
 <body>
-   
+    <button id="theme-toggle" class="theme-btn">تبديل الوضع</button>
+    
     <form action="btn.php" method="post">
 
-        <h2>  Online Editor</h2>
-
-       
-
-       
-
-        <div class="input-group">
-            <label for="btn_css"><i class="fa-solid fa-paint-brush"></i> أكواد CSS:</label>
-            <textarea id="btn_css" name="btn_css" required></textarea>
-        </div>
+<div class="container">
+    <div class="box">
         <div class="input-group">
             <label for="btn_html"><i class="fa-solid fa-code"></i> أكواد HTML:</label>
             <textarea id="btn_html" name="btn_html" required></textarea>
         </div>
-        
+    </div>
+ 
+    <div class="box">
+        <div class="input-group">
+            <label for="btn_css"><i class="fa-solid fa-paint-brush"></i> أكواد CSS:</label>
+            <textarea id="btn_css" name="btn_css" required></textarea>
+        </div>
+    </div>
+
+</div>  
+       
     </form>
 
     <div class="preview" id="___output"></div>
@@ -46,37 +51,49 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.1/codemirror.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.1/mode/htmlmixed/htmlmixed.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.1/mode/css/css.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.1/mode/sass/sass.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.1/addon/hint/show-hint.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.1/addon/hint/css-hint.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.1/addon/hint/html-hint.min.js"></script>
 
     <script>
         // تهيئة محررات CodeMirror
         const htmlEditor = CodeMirror.fromTextArea(document.getElementById('btn_html'), {
             mode: 'htmlmixed',
             theme: 'dracula',
-            lineNumbers: true
+            lineNumbers: true,
+            extraKeys: {"Ctrl-Space": "autocomplete"}  // تمكين الإكمال التلقائي عند الضغط على Ctrl + Space
         });
 
         const cssEditor = CodeMirror.fromTextArea(document.getElementById('btn_css'), {
             mode: 'css',
             theme: 'dracula',
-            lineNumbers: true
+            lineNumbers: true,
+            extraKeys: {"Ctrl-Space": "autocomplete"}  // تمكين الإكمال التلقائي عند الضغط على Ctrl + Space
         });
 
         // تحديث المعاينة عند إدخال البيانات
         function updatePreview() {
             const htmlContent = htmlEditor.getValue();
             const cssContent = `<style>${cssEditor.getValue()}</style>`;
-            const sassContent = `<style>${sassEditor.getValue()}</style>`;
-            document.getElementById('___output').innerHTML = htmlContent + cssContent + sassContent;
+            document.getElementById('___output').innerHTML = htmlContent + cssContent;
         }
 
         // إضافة مستمعي الأحداث لتحديث المعاينة
         htmlEditor.on('change', updatePreview);
         cssEditor.on('change', updatePreview);
-        sassEditor.on('change', updatePreview);
 
         // تحديث المعاينة في البداية
         updatePreview();
+
+        // تفعيل أو تعطيل الوضع النهاري
+        document.getElementById('theme-toggle').addEventListener('click', function() {
+            document.body.classList.toggle('light-mode');
+
+            // تغيير الثيم في CodeMirror
+            const newTheme = document.body.classList.contains('light-mode') ? 'default' : 'dracula';
+            htmlEditor.setOption('theme', newTheme);
+            cssEditor.setOption('theme', newTheme);
+        });
     </script>
 </body>
 </html>
