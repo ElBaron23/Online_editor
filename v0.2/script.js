@@ -4,7 +4,7 @@ let resultbtn = document.getElementById('result');
 
 let htmlCode = document.getElementById("htmlCode");
 let cssCode = document.getElementById("cssCode");
-let resultcode = document.getElementById("resultcode");
+let resultcode = document.getElementById("resultcode"); // should be an <iframe>
 
 
 htmlbtn.addEventListener('click', () => {
@@ -25,8 +25,7 @@ resultbtn.addEventListener('click', () => {
 });
 
 function updateResult() {
-    let html = htmlCode.value
-    let css = "<style>" + cssCode.value + "</style>"
-    resultcode.srcdoc = html + css
-    
+    let html = htmlCode.value;
+    let css = "<style>" + cssCode.value + "</style>";
+    resultcode.srcdoc = html + css;
 }
