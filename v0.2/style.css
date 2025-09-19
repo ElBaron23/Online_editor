@@ -1,0 +1,138 @@
+
+
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}   
+
+ body {
+            font-family: 'Tajawal', sans-serif;
+
+ }
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px 20px;
+    background-color: rgba(253, 253, 253, 0.8);
+    backdrop-filter: blur(10px);
+}
+.nav-logo {
+   height: 100%;
+   display: flex;
+   align-items: center;
+   width: 120px;
+   img{
+    width: 30px;
+    height: 30px;
+   }
+   h1 {
+       font-size: 24px;
+       font-weight: bold;
+       color: #333;
+       text-decoration: none;
+   }
+}
+.nav-links {
+    display: flex;
+    gap: 15px;
+    a {
+        font-size: 16px;
+        font-weight: 500;
+        color: #333;
+        text-decoration: none;
+        transition: color 0.3s;
+    }
+    a:hover {
+        color: #007bff;
+    }
+}
+.container{
+    width: 100%;
+    display: flex;
+    height: 40px;
+    background: rgba(66, 66, 66, 0.8);
+    backdrop-filter: blur(10px);
+    align-items: center;
+
+}
+button{
+    background: none;
+    border: none;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+}
+#html{
+    width: 33.33%;
+    height: 100%;
+    background: orange;
+    transition: background 0.3s, box-shadow 0.3s;
+    cursor: pointer;
+    i{
+        margin-right: 2px;
+    }
+}
+#html:hover {
+    background: #ff9800;
+    box-shadow: 0 4px 16px rgba(255, 152, 0, 0.3);
+}
+#css{
+    width: 33.33%;
+    height: 100%;
+    background: blue;
+    transition: background 0.3s, box-shadow 0.3s;
+    cursor: pointer;
+    i{
+        margin-right: 2px;
+    }
+}
+#css:hover {
+    background: #1565c0;
+    box-shadow: 0 4px 16px rgba(21, 101, 192, 0.3);
+}
+
+#result{
+    width: 33.33%;
+    height: 100%;
+    background: gray;
+    transition: background 0.3s, box-shadow 0.3s;
+    cursor: pointer;
+    i{
+        margin-right: 2px;
+    }
+}
+#result:hover {
+    background: #616161;
+    box-shadow: 0 4px 16px rgba(97, 97, 97, 0.3);
+}
+#htmlCode{
+    width: 100%;
+    height: calc(100vh - 80px);
+    border: orange 2px solid;
+}
+#htmlCode:focus {
+    outline: 2px solid #ff9800;
+    box-shadow: 0 0 8px #ff9800;
+}
+#cssCode{
+    width: 100%;
+    height: calc(100vh - 80px);
+    border: blue 2px solid;
+}
+#cssCode:focus {
+    outline: 2px solid #1565c0;
+    box-shadow: 0 0 8px #1565c0;
+}
+#resultcode{
+    background: white;
+    width: 100%;
+    height: calc(100vh - 80px);
+    border: gray 2px solid;
+}
+button.active {
+  box-shadow: inset 0 -4px 0 #fff;
+  font-weight: bold;
+}
