@@ -522,10 +522,17 @@ document.addEventListener('DOMContentLoaded', () => {
         
         // Draw Selection Box
         if (isSelectingBox && selectionBox && !window.isPrintingMode) {
-            ctx.fillStyle = 'rgba(59, 130, 246, 0.2)';
-            ctx.strokeStyle = '#3b82f6';
+            const isLeftToRight = selectionBox.w > 0;
+            if (isLeftToRight) {
+                ctx.fillStyle = 'rgba(59, 130, 246, 0.15)';
+                ctx.strokeStyle = '#3b82f6';
+                ctx.setLineDash([]);
+            } else {
+                ctx.fillStyle = 'rgba(16, 185, 129, 0.15)';
+                ctx.strokeStyle = '#10b981';
+                ctx.setLineDash([5, 5]);
+            }
             ctx.lineWidth = 1;
-            ctx.setLineDash([5, 5]);
             ctx.fillRect(selectionBox.x, selectionBox.y, selectionBox.w, selectionBox.h);
             ctx.strokeRect(selectionBox.x, selectionBox.y, selectionBox.w, selectionBox.h);
             ctx.setLineDash([]);
@@ -792,12 +799,20 @@ document.addEventListener('DOMContentLoaded', () => {
                 const ry = Math.min(selectionBox.y, selectionBox.y + selectionBox.h);
                 const rw = Math.abs(selectionBox.w);
                 const rh = Math.abs(selectionBox.h);
+                const isLeftToRight = selectionBox.w > 0;
                 
                 if (rw > 5 && rh > 5) {
                     nodes.forEach(n => {
-                        if (n.x < rx + rw && n.x + n.w > rx &&
-                            n.y < ry + rh && n.y + n.h > ry) {
-                            selectedNodes.add(n);
+                        if (isLeftToRight) {
+                            if (n.x >= rx && n.x + n.w <= rx + rw &&
+                                n.y >= ry && n.y + n.h <= ry + rh) {
+                                selectedNodes.add(n);
+                            }
+                        } else {
+                            if (n.x < rx + rw && n.x + n.w > rx &&
+                                n.y < ry + rh && n.y + n.h > ry) {
+                                selectedNodes.add(n);
+                            }
                         }
                     });
                 }
