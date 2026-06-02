@@ -18,57 +18,83 @@
     
     <!-- Custom Styles -->
     <link rel="stylesheet" href="assets/css/style.css?v=2">
+    <style>
+        /* Force d-none to override d-flex (Fix for Bootstrap specificity conflict & cache issues) */
+        .d-none { display: none !important; }
+    </style>
 </head>
 <body class="glass-theme">
 
 
 
-    <!-- Ambient Background Orbs -->
-    <div class="bg-orb orb-1"></div>
-    <div class="bg-orb orb-2"></div>
+    <!-- Ambient Background Orbs (Hidden for VS Code Theme) -->
+    <div class="bg-orb orb-1" style="display: none;"></div>
+    <div class="bg-orb orb-2" style="display: none;"></div>
     
-    <div class="app-container d-flex">
+    <div class="app-container d-flex flex-column h-100">
         
-        <!-- Activity Bar -->
-        <div class="activity-bar glass-panel d-flex flex-column align-items-center py-3 m-3 me-0">
-            <!-- Workspaces -->
-            <div class="activity-icon active" id="nav-workspace-ide" title="Code IDE" data-i18n-title="workspace_ide">
-                <i class="fa-solid fa-laptop-code"></i>
+        <!-- Top Menu Bar -->
+        <div class="top-menu-bar d-flex align-items-center px-3" style="height: 35px; background: #181818; border-bottom: 1px solid #2b2b2b;">
+            <div class="menu-brand me-4 d-flex align-items-center">
+                <i class="fa-solid fa-bars text-light opacity-50 hover-white me-3 cursor-pointer" id="btn-toggle-sidebar-top" title="Toggle Sidebar" style="font-size: 14px; transition: 0.2s;"></i>
+                <img src="logo.svg" alt="Formatech" height="18" style="object-fit: contain;" onerror="this.style.display='none'">
             </div>
-            <div class="activity-icon mt-4" id="nav-workspace-logic" title="Logic Gates Simulator" data-i18n-title="workspace_logic">
-                <i class="fa-solid fa-microchip"></i>
-            </div>
-            <div class="activity-icon mt-4" id="nav-workspace-circuit" title="Arduino Simulator" data-i18n-title="workspace_circuit">
-                <i class="fa-solid fa-bolt"></i>
-            </div>
-            
-            <div class="border-bottom border-secondary w-50 my-3" style="opacity: 0.3;"></div>
-            
-            <!-- IDE Specific Tools -->
-            <div class="activity-icon active" id="nav-explorer" title="Explorer">
-                <i class="fa-regular fa-file-code"></i>
-            </div>
-            <div class="activity-icon mt-4" id="nav-extensions" title="Extensions">
-                <i class="fa-solid fa-puzzle-piece"></i>
-            </div>
-            
-            <div class="mt-auto activity-icon" id="btn-settings" data-bs-toggle="modal" data-bs-target="#settingsModal" title="Settings">
-                <i class="fa-solid fa-gear"></i>
+            <div class="menu-items d-flex gap-3 text-light opacity-75" style="font-size: 13px; user-select: none;">
+                <div class="menu-item cursor-pointer hover-white">File</div>
+                <div class="menu-item cursor-pointer hover-white">Edit</div>
+                <div class="menu-item cursor-pointer hover-white">Selection</div>
+                <div class="menu-item cursor-pointer hover-white">View</div>
+                <div class="menu-item cursor-pointer hover-white">Go</div>
+                <div class="menu-item cursor-pointer hover-white">Run</div>
+                <div class="menu-item cursor-pointer hover-white">Terminal</div>
+                <div class="menu-item cursor-pointer hover-white">Help</div>
             </div>
         </div>
 
-        <!-- Workspaces Container -->
-        <div id="workspaces-container" class="flex-grow-1 d-flex position-relative overflow-hidden">
-            <!-- Workspace 1: Code IDE -->
-            <div id="workspace-ide" class="d-flex w-100 h-100 active-workspace">
-                
-                <!-- Floating Sidebar -->
-        <aside class="glass-panel sidebar d-flex flex-column m-3 ms-2 me-2">
-            <!-- Brand Logo -->
-            <div class="sidebar-brand text-center p-4">
-                <img src="logo.svg" alt="Formatech Logo" height="45" style="width: auto; object-fit: contain;" onerror="this.style.display='none'">
-            </div>
+        <!-- Main Body Area -->
+        <div class="d-flex flex-grow-1 overflow-hidden position-relative">
             
+            <!-- Activity Bar Hover Zone -->
+            <div class="activity-bar-hover-zone">
+                <!-- Activity Bar -->
+                <div class="activity-bar d-flex flex-column align-items-center py-2 h-100" style="background: #1e1e1e; width: 48px; border-right: 1px solid #2b2b2b;">
+                    <!-- Workspaces -->
+                    <div class="activity-icon active my-2" id="nav-workspace-ide" title="Code IDE" data-i18n-title="workspace_ide">
+                        <i class="fa-solid fa-laptop-code"></i>
+                    </div>
+                    <div class="activity-icon my-2" id="nav-workspace-logic" title="Logic Gates Simulator" data-i18n-title="workspace_logic">
+                        <i class="fa-solid fa-microchip"></i>
+                    </div>
+                    <div class="activity-icon my-2" id="nav-workspace-circuit" title="Arduino Simulator" data-i18n-title="workspace_circuit">
+                        <i class="fa-solid fa-bolt"></i>
+                    </div>
+                    
+                    <div class="border-bottom border-secondary w-50 my-2" style="opacity: 0.3;"></div>
+                    
+                    <!-- IDE Specific Tools -->
+                    <div class="activity-icon active my-2" id="nav-explorer" title="Explorer">
+                        <i class="fa-regular fa-file-code"></i>
+                    </div>
+                    <div class="activity-icon my-2" id="nav-extensions" title="Extensions">
+                        <i class="fa-solid fa-puzzle-piece"></i>
+                    </div>
+                    
+                    <div class="mt-auto activity-icon mb-2" id="btn-toggle-sidebar" title="Collapse Sidebar">
+                        <i class="fa-solid fa-chevron-left" id="toggle-sidebar-icon"></i>
+                    </div>
+                    <div class="activity-icon mb-2" id="btn-settings" data-bs-toggle="modal" data-bs-target="#settingsModal" title="Settings">
+                        <i class="fa-solid fa-gear"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Workspaces Container -->
+            <div id="workspaces-container" class="flex-grow-1 d-flex position-relative overflow-hidden w-100" style="background: #1e1e1e;">
+                <!-- Workspace 1: Code IDE -->
+                <div id="workspace-ide" class="d-flex w-100 h-100 active-workspace">
+                
+                <!-- Sidebar -->
+        <aside class="sidebar d-flex flex-column" style="background: #181818; border-right: 1px solid #2b2b2b;">
             <!-- Views Container -->
             <div id="views-container" class="flex-grow-1 overflow-hidden position-relative">
                 
@@ -115,12 +141,12 @@
         </aside>
 
         <!-- Main Workspace (Editor + Live Preview + Console) -->
-        <main class="workspace-area flex-grow-1 d-flex flex-column m-3 ms-0">
+        <main class="workspace-area flex-grow-1 d-flex flex-column bg-dark">
             <!-- Top Split Area -->
             <div class="top-split-area d-flex flex-grow-1 overflow-hidden" id="top-split-area">
                 
                 <!-- Editor Panel -->
-                <div class="glass-panel editor-panel d-flex flex-column" id="editor-panel" style="width: 100%;">
+                <div class="editor-panel d-flex flex-column" id="editor-panel" style="width: 100%; background: #1e1e1e;">
                     <!-- Tabs -->
                     <ul class="nav nav-tabs editor-tabs" id="editor-tabs">
                         <!-- Tabs injected here via JS -->
@@ -169,30 +195,17 @@
                 </div>
             </div>
 
-            <!-- Status Bar -->
-            <div class="glass-panel status-bar d-flex justify-content-between px-4 py-2 mt-3" style="border-radius: 12px; height: 45px; align-items: center;">
-                <div id="status-left" class="d-flex align-items-center">
-                    <i class="fa-solid fa-circle-check text-success me-2" id="status-icon"></i> <span class="text-light opacity-75" id="status-text" data-i18n="ready">Ready</span>
-                    
-                    <!-- Console Toggle Button (Visible only if extension enabled) -->
-                    <span id="status-console-toggle" class="ms-4 text-light opacity-50 cursor-pointer hover-white" style="display: none; cursor: pointer;" title="Toggle Console Panel">
-                        <i class="fa-solid fa-terminal"></i> <span data-i18n="console">Console</span>
-                        <span id="console-error-count" class="badge bg-danger rounded-pill ms-1" style="display: none;">0</span>
-                    </span>
-                </div>
-                <div id="status-right" class="badge bg-primary rounded-pill px-3 py-1 text-uppercase" style="opacity: 0.8; font-weight: 600;">-</div>
-            </div>
         </main>
-            </div> <!-- End Workspace IDE -->
+        </div> <!-- End Workspace IDE -->
 
             <!-- Workspace 2: Logic Gates -->
-            <div id="workspace-logic" class="d-none w-100 h-100 d-flex flex-column">
+            <div id="workspace-logic" class="d-none w-100 h-100 flex-column">
                 <!-- Logic Tabs UI -->
                 <ul class="nav nav-tabs logic-tabs border-bottom-0 mt-2 px-3" id="logic-tabs-container" style="border-color: rgba(255,255,255,0.1);">
                     <!-- Tabs will be injected here via JS -->
                 </ul>
                 <!-- Logic Toolbar -->
-                <div class="glass-panel p-2 mx-3 mb-0 d-flex flex-column gap-2 border-secondary border-opacity-25" style="border-radius: 8px;">
+                <div class="p-2 mb-0 d-flex flex-column gap-2" style="background: #252526; border-bottom: 1px solid #333;">
                     <!-- Row 1: System Gates & Tools -->
                     <div class="d-flex gap-2" style="flex-wrap: wrap; align-items: center;">
                         <div class="d-flex gap-2" id="standard-gates-container">
@@ -222,20 +235,36 @@
                     </div>
                 </div>
                 <!-- Logic Canvas Container -->
-                <div class="flex-grow-1 m-3 position-relative" style="background: #1e1e24; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05); overflow: hidden;">
+                <div class="flex-grow-1 position-relative" style="background: #1e1e1e; overflow: hidden;">
                     <!-- Canvas grid is drawn dynamically via JS now -->
                     <canvas id="logic-canvas" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; cursor: crosshair;"></canvas>
                 </div>
             </div>
 
             <!-- Workspace 3: Circuits & Arduino -->
-            <div id="workspace-circuit" class="d-none w-100 h-100 p-3">
-                <div class="glass-panel w-100 h-100 d-flex flex-column align-items-center justify-content-center">
+            <div id="workspace-circuit" class="d-none w-100 h-100 p-3" style="background: #1e1e1e;">
+                <div class="w-100 h-100 d-flex flex-column align-items-center justify-content-center">
                     <h1 class="text-light" style="font-size: 3rem;"><i class="fa-solid fa-bolt me-3 text-warning"></i><span data-i18n="workspace_circuit">Arduino Simulator</span></h1>
                     <p class="text-secondary mt-3 fs-5" data-i18n="under_construction">This workspace is under construction and will be available soon...</p>
                 </div>
             </div>
         </div> <!-- End workspaces-container -->
+        </div> <!-- End Main Body Area flex row -->
+
+        <!-- Status Bar -->
+        <div class="status-bar d-flex justify-content-between px-3" style="height: 22px; background: #007acc; align-items: center; font-size: 12px; color: #fff;">
+            <div id="status-left" class="d-flex align-items-center h-100">
+                <i class="fa-solid fa-check me-2" id="status-icon" style="font-size: 11px;"></i> <span id="status-text" data-i18n="ready">Ready</span>
+                
+                <!-- Console Toggle Button (Visible only if extension enabled) -->
+                <span id="status-console-toggle" class="ms-4 cursor-pointer hover-opacity-100 d-flex align-items-center h-100" style="display: none; cursor: pointer; opacity: 0.8;" title="Toggle Console Panel">
+                    <i class="fa-solid fa-terminal me-1" style="font-size: 11px;"></i> <span data-i18n="console">Console</span>
+                    <span id="console-error-count" class="badge bg-danger rounded-pill ms-1" style="display: none; font-size: 10px; padding: 2px 5px;">0</span>
+                </span>
+            </div>
+            <div id="status-right" class="d-flex align-items-center h-100" style="opacity: 0.9; font-weight: 500; font-family: 'Consolas', monospace;">-</div>
+        </div>
+
     </div>
 
     <!-- Context Menu -->

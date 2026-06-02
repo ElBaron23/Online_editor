@@ -60,9 +60,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 document.getElementById(`nav-workspace-${tab}`).classList.remove('active');
                 document.getElementById(`workspace-${tab}`).classList.remove('active-workspace');
                 document.getElementById(`workspace-${tab}`).classList.add('d-none');
+                document.getElementById(`workspace-${tab}`).classList.remove('d-flex');
             });
             document.getElementById(`nav-workspace-${ws}`).classList.add('active');
             document.getElementById(`workspace-${ws}`).classList.remove('d-none');
+            document.getElementById(`workspace-${ws}`).classList.add('d-flex');
             document.getElementById(`workspace-${ws}`).classList.add('active-workspace');
 
             // Toggle IDE specific tools visibility (only show when IDE is active)
@@ -93,6 +95,11 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('nav-extensions').classList.remove('active');
         document.getElementById('explorer-view').classList.add('active');
         document.getElementById('extensions-view').classList.remove('active');
+        // Ensure sidebar is expanded if clicking the icon
+        const sidebar = document.querySelector('.sidebar');
+        if (sidebar && sidebar.classList.contains('collapsed')) {
+            toggleSidebar();
+        }
     });
     document.getElementById('nav-extensions').addEventListener('click', () => {
         document.getElementById('nav-extensions').classList.add('active');
@@ -100,7 +107,38 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('extensions-view').classList.add('active');
         document.getElementById('explorer-view').classList.remove('active');
         if (window.renderExtensions) window.renderExtensions();
+        
+        // Ensure sidebar is expanded if clicking the icon
+        const sidebar = document.querySelector('.sidebar');
+        if (sidebar && sidebar.classList.contains('collapsed')) {
+            toggleSidebar();
+        }
     });
+
+    // Sidebar Toggle Functionality
+    function toggleSidebar() {
+        const sidebar = document.querySelector('.sidebar');
+        if (!sidebar) return;
+        
+        sidebar.classList.toggle('collapsed');
+        
+        const isCollapsed = sidebar.classList.contains('collapsed');
+        const icon = document.getElementById('toggle-sidebar-icon');
+        if (icon) {
+            icon.className = isCollapsed ? 'fa-solid fa-chevron-right' : 'fa-solid fa-chevron-left';
+        }
+        
+        // Fix for CodeMirror editor failing to resize immediately after CSS transition
+        if (typeof editor !== 'undefined') {
+            setTimeout(() => editor.refresh(), 300);
+        }
+    }
+
+    const btnToggleBottom = document.getElementById('btn-toggle-sidebar');
+    const btnToggleTop = document.getElementById('btn-toggle-sidebar-top');
+    
+    if (btnToggleBottom) btnToggleBottom.addEventListener('click', toggleSidebar);
+    if (btnToggleTop) btnToggleTop.addEventListener('click', toggleSidebar);
 
     // --- Settings State ---
     let autoSaveMode = 'instant'; // instant, delay, off

@@ -1,12 +1,12 @@
-/* Glassmorphism Theme */
+/* Modern VS Code Dark Theme */
 body {
     overflow: hidden;
     height: 100vh;
     margin: 0;
     font-family: 'Segoe UI', 'Inter', Tahoma, Geneva, Verdana, sans-serif;
     /* Deep dark background */
-    background-color: #050608;
-    color: #e2e8f0;
+    background-color: #1e1e1e;
+    color: #cccccc;
     position: relative;
 }
 
@@ -43,23 +43,30 @@ body {
     height: 100vh;
 }
 
-/* Core Glass Panel Style */
+/* Core Glass Panel Style - Deprecated for VS code look but kept for modals */
 .glass-panel {
-    background: rgba(15, 17, 21, 0.5);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
+    background: #252526;
     border: 1px solid rgba(255, 255, 255, 0.05);
-    border-radius: 18px;
-    box-shadow: 0 10px 40px 0 rgba(0, 0, 0, 0.4);
+    border-radius: 4px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
     overflow: hidden;
 }
 
 /* Sidebar Specifics */
 .sidebar {
-    width: 280px;
-    min-width: 280px;
+    width: 250px;
+    min-width: 250px;
     flex-shrink: 0;
     user-select: none;
+    background: #252526 !important;
+    transition: width 0.3s ease, min-width 0.3s ease;
+    overflow: hidden;
+}
+
+.sidebar.collapsed {
+    width: 0 !important;
+    min-width: 0 !important;
+    border-right: none !important;
 }
 
 .sidebar-brand {
@@ -192,35 +199,34 @@ body {
 
 /* Editor Tabs */
 .editor-tabs {
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
-    background: rgba(0, 0, 0, 0.15);
-    padding: 10px 15px 0 15px;
+    border-bottom: 1px solid #1e1e1e !important;
+    background: #2d2d2d;
+    padding: 0;
     margin-bottom: 0;
-    gap: 6px;
+    gap: 0;
 }
 .editor-tabs .nav-link {
-    border: 1px solid transparent !important;
-    border-bottom: none !important;
-    border-radius: 12px 12px 0 0 !important;
-    color: #94a3b8 !important;
-    background: transparent !important;
-    padding: 9px 20px;
-    font-size: 14px;
+    border: none !important;
+    border-right: 1px solid #1e1e1e !important;
+    border-radius: 0 !important;
+    color: #969696 !important;
+    background: #2d2d2d !important;
+    padding: 8px 16px;
+    font-size: 13px;
     display: flex;
     align-items: center;
-    gap: 10px;
-    transition: all 0.2s;
+    gap: 8px;
+    transition: all 0.1s;
 }
 .editor-tabs .nav-link:hover {
-    background: rgba(255, 255, 255, 0.03) !important;
-    color: #f8fafc !important;
+    background: #2b2b2b !important;
+    color: #cccccc !important;
 }
 .editor-tabs .nav-link.active {
-    color: #00f2fe !important;
-    background: rgba(0, 242, 254, 0.05) !important;
-    border: 1px solid rgba(0, 242, 254, 0.15) !important;
-    border-bottom: none !important;
-    box-shadow: 0 -4px 15px rgba(0, 242, 254, 0.05);
+    color: #ffffff !important;
+    background: #1e1e1e !important;
+    border-bottom: 1px solid #007acc !important;
+    box-shadow: none;
 }
 .close-tab {
     font-size: 12px;
@@ -242,17 +248,17 @@ body {
 /* Code Container & Editor */
 .code-container {
     overflow: hidden;
-    background: rgba(0, 0, 0, 0.25);
+    background: #1e1e1e;
 }
 .CodeMirror {
     height: 100% !important;
     font-family: 'Consolas', 'Courier New', monospace;
-    font-size: 15px;
-    background: transparent !important;
+    font-size: 14px;
+    background: #1e1e1e !important;
 }
 .CodeMirror-gutters {
-    background: rgba(10, 12, 16, 0.4) !important;
-    border-right: 1px solid rgba(255, 255, 255, 0.03) !important;
+    background: #1e1e1e !important;
+    border-right: 1px solid #444 !important;
 }
 
 /* No File Screen */
@@ -263,15 +269,14 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    background: transparent;
+    background: #1e1e1e;
     z-index: 10;
 }
 
 /* Status Bar */
 .status-bar {
-    border-top: 1px solid rgba(255, 255, 255, 0.03);
-    background: rgba(0, 0, 0, 0.15);
-    font-size: 13px;
+    border-top: none;
+    font-size: 12px;
 }
 
 /* Icons Colors */
@@ -339,41 +344,89 @@ li.CodeMirror-hint-active {
     color: #00f2fe !important;
 }
 
+/* Activity Bar Hover Zone (Auto-hide logic) */
+.activity-bar-hover-zone {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 15px; /* Hit area */
+    z-index: 1000;
+    background: transparent;
+}
+.activity-bar-hover-zone:hover {
+    width: 48px; /* Expand hit area so it covers the activity bar when active */
+}
+
 /* Activity Bar */
 .activity-bar {
-    width: 60px;
-    min-width: 60px;
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 48px !important;
+    min-width: 48px !important;
     flex-shrink: 0;
-    border-radius: 16px;
-    padding-top: 15px;
-    padding-bottom: 15px;
-    gap: 15px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    transform: translateX(-100%);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
+
+.activity-bar-hover-zone:hover .activity-bar {
+    transform: translateX(0);
+    box-shadow: 4px 0 15px rgba(0,0,0,0.5);
+}
+
+/* Optional tiny hint arrow when hidden */
+.activity-bar-hover-zone::after {
+    content: '\f105'; /* FontAwesome chevron-right */
+    font-family: "Font Awesome 6 Free";
+    font-weight: 900;
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    color: rgba(255,255,255,0.3);
+    font-size: 10px;
+    padding: 10px 3px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 0 4px 4px 0;
+    transition: opacity 0.2s;
+    pointer-events: none;
+}
+.activity-bar-hover-zone:hover::after {
+    opacity: 0;
+}
+
 .activity-icon {
-    font-size: 22px;
-    color: rgba(255, 255, 255, 0.4);
+    font-size: 24px;
+    color: #858585;
     cursor: pointer;
-    transition: all 0.2s;
+    transition: color 0.2s;
     width: 100%;
     text-align: center;
     position: relative;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 .activity-icon:hover {
-    color: #fff;
+    color: #ffffff;
 }
 .activity-icon.active {
-    color: #00f2fe;
+    color: #ffffff;
 }
 .activity-icon.active::before {
     content: '';
     position: absolute;
     left: 0;
-    top: 50%;
-    transform: translateY(-50%);
-    height: 50%;
-    width: 3px;
-    background-color: #00f2fe;
-    border-radius: 0 4px 4px 0;
+    top: 0;
+    height: 100%;
+    width: 2px;
+    background-color: #007acc;
+    border-radius: 0;
 }
 
 /* Extension Cards */
@@ -458,16 +511,16 @@ li.CodeMirror-hint-active {
 
 /* Resizer / Splitter */
 .resizer {
-    width: 6px;
-    background: rgba(255, 255, 255, 0.03);
+    width: 4px;
+    background: transparent;
     cursor: col-resize;
-    margin: 0 4px;
-    border-radius: 4px;
-    transition: background 0.2s;
+    margin: 0;
+    border-radius: 0;
+    transition: background 0.1s;
     z-index: 10;
 }
 .resizer:hover, .resizer.resizing {
-    background: rgba(0, 242, 254, 0.5);
+    background: #007acc;
 }
 
 /* RTL Support */
