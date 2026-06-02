@@ -739,6 +739,14 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
+        if (hoveredPort && e.button === 0) {
+            isWiring = true;
+            wiringStartNode = hoveredPort.node;
+            wiringStartPortType = hoveredPort.type;
+            wiringStartPortIndex = hoveredPort.index;
+            return;
+        }
+
         if (hoveredNode) {
             isDragging = true;
             draggedNode = hoveredNode;
