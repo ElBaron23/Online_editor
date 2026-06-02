@@ -1,0 +1,487 @@
+/* Glassmorphism Theme */
+body {
+    overflow: hidden;
+    height: 100vh;
+    margin: 0;
+    font-family: 'Segoe UI', 'Inter', Tahoma, Geneva, Verdana, sans-serif;
+    /* Deep dark background */
+    background-color: #050608;
+    color: #e2e8f0;
+    position: relative;
+}
+
+/* Background animated orbs for glass effect depth */
+.bg-orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(90px);
+    z-index: -1;
+    animation: float 12s infinite ease-in-out alternate;
+}
+.orb-1 {
+    width: 450px;
+    height: 450px;
+    background: rgba(0, 242, 254, 0.15); /* Formatek Cyan */
+    top: -50px;
+    left: -100px;
+}
+.orb-2 {
+    width: 550px;
+    height: 550px;
+    background: rgba(127, 0, 255, 0.12); /* Formatek Purple */
+    bottom: -150px;
+    right: -50px;
+    animation-delay: -6s;
+}
+
+@keyframes float {
+    0% { transform: translate(0, 0); }
+    100% { transform: translate(60px, 60px); }
+}
+
+.app-container {
+    height: 100vh;
+}
+
+/* Core Glass Panel Style */
+.glass-panel {
+    background: rgba(15, 17, 21, 0.5);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 18px;
+    box-shadow: 0 10px 40px 0 rgba(0, 0, 0, 0.4);
+    overflow: hidden;
+}
+
+/* Sidebar Specifics */
+.sidebar {
+    width: 280px;
+    min-width: 280px;
+    flex-shrink: 0;
+    user-select: none;
+}
+
+.sidebar-brand {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+    background: rgba(0, 0, 0, 0.1);
+}
+
+.glass-btn {
+    background: linear-gradient(135deg, rgba(0, 242, 254, 0.15), rgba(79, 172, 254, 0.15));
+    border: 1px solid rgba(0, 242, 254, 0.3);
+    color: #00f2fe;
+    border-radius: 12px;
+    font-weight: 600;
+    padding: 10px 0;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.glass-btn:hover {
+    background: linear-gradient(135deg, rgba(0, 242, 254, 0.3), rgba(79, 172, 254, 0.3));
+    border-color: rgba(0, 242, 254, 0.6);
+    color: #fff;
+    box-shadow: 0 0 20px rgba(0, 242, 254, 0.2);
+    transform: translateY(-2px);
+}
+
+.explorer-header {
+    height: 40px;
+}
+.explorer-title {
+    font-size: 11.5px;
+    font-weight: 700;
+    color: #94a3b8;
+    letter-spacing: 1.5px;
+}
+.explorer-actions {
+    display: flex;
+    gap: 15px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+.sidebar:hover .explorer-actions {
+    opacity: 1;
+}
+.action-icon {
+    cursor: pointer;
+    font-size: 16px;
+    color: #94a3b8;
+    transition: all 0.2s;
+}
+.action-icon:hover {
+    color: #00f2fe;
+    transform: scale(1.15);
+}
+
+/* Tree View Styles */
+.tree-node {
+    display: flex;
+    flex-direction: column;
+}
+.file-item, .folder-item {
+    cursor: pointer;
+    padding: 7px 12px;
+    font-size: 14.5px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: #cbd5e1;
+    border-radius: 8px;
+    margin-bottom: 3px;
+    transition: all 0.2s ease;
+    border: 1px solid transparent;
+}
+.file-item:hover, .folder-item:hover {
+    background: rgba(255, 255, 255, 0.04);
+    color: #fff;
+}
+.file-item.active {
+    background: rgba(0, 242, 254, 0.08);
+    color: #00f2fe;
+    border: 1px solid rgba(0, 242, 254, 0.15);
+}
+.folder-item.selected {
+    border: 1px dashed rgba(127, 0, 255, 0.4);
+    background: rgba(127, 0, 255, 0.05);
+}
+.file-item.drag-over, .folder-item.drag-over {
+    border: 1px dashed #00f2fe !important;
+    background: rgba(0, 242, 254, 0.1) !important;
+}
+.folder-children {
+    padding-left: 22px;
+    border-left: 1px dashed rgba(255, 255, 255, 0.08);
+    margin-left: 16px;
+}
+.folder-children.collapsed {
+    display: none;
+}
+
+/* Context Menu */
+.context-menu {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    width: 170px;
+    background: rgba(20, 21, 26, 0.85);
+    backdrop-filter: blur(25px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 8px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+}
+.context-menu-item {
+    padding: 9px 14px;
+    font-size: 13.5px;
+    cursor: pointer;
+    color: #e2e8f0;
+    border-radius: 8px;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.context-menu-item:hover {
+    background: rgba(0, 242, 254, 0.15);
+    color: #00f2fe;
+}
+.context-menu-item.text-danger:hover {
+    background: rgba(239, 68, 68, 0.15) !important;
+    color: #ef4444 !important;
+}
+
+/* Editor Tabs */
+.editor-tabs {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
+    background: rgba(0, 0, 0, 0.15);
+    padding: 10px 15px 0 15px;
+    margin-bottom: 0;
+    gap: 6px;
+}
+.editor-tabs .nav-link {
+    border: 1px solid transparent !important;
+    border-bottom: none !important;
+    border-radius: 12px 12px 0 0 !important;
+    color: #94a3b8 !important;
+    background: transparent !important;
+    padding: 9px 20px;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: all 0.2s;
+}
+.editor-tabs .nav-link:hover {
+    background: rgba(255, 255, 255, 0.03) !important;
+    color: #f8fafc !important;
+}
+.editor-tabs .nav-link.active {
+    color: #00f2fe !important;
+    background: rgba(0, 242, 254, 0.05) !important;
+    border: 1px solid rgba(0, 242, 254, 0.15) !important;
+    border-bottom: none !important;
+    box-shadow: 0 -4px 15px rgba(0, 242, 254, 0.05);
+}
+.close-tab {
+    font-size: 12px;
+    margin-left: 6px;
+    padding: 5px;
+    border-radius: 50%;
+    opacity: 0.5;
+    transition: all 0.2s;
+}
+.nav-link:hover .close-tab {
+    opacity: 0.8;
+}
+.close-tab:hover {
+    opacity: 1 !important;
+    background-color: rgba(239, 68, 68, 0.8);
+    color: #fff;
+}
+
+/* Code Container & Editor */
+.code-container {
+    overflow: hidden;
+    background: rgba(0, 0, 0, 0.25);
+}
+.CodeMirror {
+    height: 100% !important;
+    font-family: 'Consolas', 'Courier New', monospace;
+    font-size: 15px;
+    background: transparent !important;
+}
+.CodeMirror-gutters {
+    background: rgba(10, 12, 16, 0.4) !important;
+    border-right: 1px solid rgba(255, 255, 255, 0.03) !important;
+}
+
+/* No File Screen */
+.no-file-screen {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: transparent;
+    z-index: 10;
+}
+
+/* Status Bar */
+.status-bar {
+    border-top: 1px solid rgba(255, 255, 255, 0.03);
+    background: rgba(0, 0, 0, 0.15);
+    font-size: 13px;
+}
+
+/* Icons Colors */
+.icon-html { color: #e34c26; filter: drop-shadow(0 0 3px rgba(227, 76, 38, 0.4)); }
+.icon-css { color: #264de4; filter: drop-shadow(0 0 3px rgba(38, 77, 228, 0.4)); }
+.icon-js { color: #f7df1e; filter: drop-shadow(0 0 3px rgba(247, 223, 30, 0.4)); }
+.icon-folder { color: #a78bfa; } /* Purple/Lavender folders */
+
+/* Custom Inputs & Modal specific */
+.glass-input {
+    background: rgba(0, 0, 0, 0.2) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    color: #e2e8f0 !important;
+}
+.glass-input:focus {
+    box-shadow: 0 0 10px rgba(0, 242, 254, 0.3) !important;
+    border-color: rgba(0, 242, 254, 0.5) !important;
+}
+.hover-white {
+    transition: all 0.2s;
+}
+.hover-white:hover {
+    color: #fff !important;
+    background: rgba(255, 255, 255, 0.05) !important;
+}
+
+/* CodeMirror Hints Styling for Glassmorphism */
+.CodeMirror-hints {
+    position: absolute;
+    z-index: 1000;
+    overflow: hidden;
+    list-style: none;
+    margin: 0;
+    padding: 6px;
+    background: rgba(20, 21, 26, 0.9) !important;
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    border-radius: 12px !important;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.5) !important;
+    font-family: 'Consolas', 'Courier New', monospace;
+    font-size: 14px;
+    color: #e2e8f0;
+    max-height: 250px;
+    overflow-y: auto;
+}
+.CodeMirror-hints::-webkit-scrollbar {
+    width: 6px;
+}
+.CodeMirror-hints::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+}
+.CodeMirror-hint {
+    margin: 0;
+    padding: 6px 12px !important;
+    border-radius: 6px;
+    white-space: pre;
+    color: #cbd5e1 !important;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+}
+li.CodeMirror-hint-active {
+    background: rgba(0, 242, 254, 0.15) !important;
+    color: #00f2fe !important;
+}
+
+/* Activity Bar */
+.activity-bar {
+    width: 60px;
+    min-width: 60px;
+    flex-shrink: 0;
+    border-radius: 16px;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    gap: 15px;
+}
+.activity-icon {
+    font-size: 22px;
+    color: rgba(255, 255, 255, 0.4);
+    cursor: pointer;
+    transition: all 0.2s;
+    width: 100%;
+    text-align: center;
+    position: relative;
+}
+.activity-icon:hover {
+    color: #fff;
+}
+.activity-icon.active {
+    color: #00f2fe;
+}
+.activity-icon.active::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    height: 50%;
+    width: 3px;
+    background-color: #00f2fe;
+    border-radius: 0 4px 4px 0;
+}
+
+/* Extension Cards */
+.extension-card {
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    padding: 12px;
+    margin-bottom: 12px;
+    transition: all 0.3s;
+}
+.extension-card:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(0, 242, 254, 0.3);
+}
+.extension-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    background: rgba(0, 242, 254, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    color: #00f2fe;
+}
+.extension-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 2px;
+}
+.extension-desc {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.5);
+    line-height: 1.3;
+}
+.btn-install {
+    font-size: 11px;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-weight: 600;
+}
+
+/* Console Panel */
+.console-output {
+    background: rgba(0, 0, 0, 0.4);
+}
+.console-line {
+    padding: 4px 8px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.02);
+}
+.console-line.error {
+    color: #ef4444;
+    background: rgba(239, 68, 68, 0.1);
+}
+.console-line.warn {
+    color: #f59e0b;
+    background: rgba(245, 158, 11, 0.1);
+}
+.console-line.log {
+    color: #94a3b8;
+}
+
+/* View panels */
+.view-panel {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+.view-panel.active {
+    opacity: 1;
+    pointer-events: auto;
+    position: relative;
+}
+
+
+
+/* Resizer / Splitter */
+.resizer {
+    width: 6px;
+    background: rgba(255, 255, 255, 0.03);
+    cursor: col-resize;
+    margin: 0 4px;
+    border-radius: 4px;
+    transition: background 0.2s;
+    z-index: 10;
+}
+.resizer:hover, .resizer.resizing {
+    background: rgba(0, 242, 254, 0.5);
+}
+
+/* RTL Support */
+html[dir="rtl"] .me-2, html[dir="rtl"] .me-1 {
+    margin-right: 0 !important;
+    margin-left: 0.5rem !important;
+}
+html[dir="rtl"] .ms-2, html[dir="rtl"] .ms-4 {
+    margin-left: 0 !important;
+    margin-right: 0.5rem !important;
+}
+html[dir="rtl"] .float-end {
+    float: left !important;
+}
+html[dir="rtl"] .CodeMirror {
+    direction: ltr; /* Always keep code LTR */
+}

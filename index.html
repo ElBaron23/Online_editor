@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formatech IDE</title>
+
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- CodeMirror Core -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.1/codemirror.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.1/theme/monokai.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.1/addon/hint/show-hint.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.1/addon/lint/lint.min.css">
+    
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="assets/css/style.css?v=2">
+</head>
+<body class="glass-theme">
+
+
+
+    <!-- Ambient Background Orbs -->
+    <div class="bg-orb orb-1"></div>
+    <div class="bg-orb orb-2"></div>
+    
+    <div class="app-container d-flex">
+        
+        <!-- Activity Bar -->
+        <div class="activity-bar glass-panel d-flex flex-column align-items-center py-3 m-3 me-0">
+            <!-- Workspaces -->
+            <div class="activity-icon active" id="nav-workspace-ide" title="Code IDE" data-i18n-title="workspace_ide">
+                <i class="fa-solid fa-laptop-code"></i>
+            </div>
+            <div class="activity-icon mt-4" id="nav-workspace-logic" title="Logic Gates Simulator" data-i18n-title="workspace_logic">
+                <i class="fa-solid fa-microchip"></i>
+            </div>
+            <div class="activity-icon mt-4" id="nav-workspace-circuit" title="Arduino Simulator" data-i18n-title="workspace_circuit">
+                <i class="fa-solid fa-bolt"></i>
+            </div>
+            
+            <div class="border-bottom border-secondary w-50 my-3" style="opacity: 0.3;"></div>
+            
+            <!-- IDE Specific Tools -->
+            <div class="activity-icon active" id="nav-explorer" title="Explorer">
+                <i class="fa-regular fa-file-code"></i>
+            </div>
+            <div class="activity-icon mt-4" id="nav-extensions" title="Extensions">
+                <i class="fa-solid fa-puzzle-piece"></i>
+            </div>
+            
+            <div class="mt-auto activity-icon" id="btn-settings" data-bs-toggle="modal" data-bs-target="#settingsModal" title="Settings">
+                <i class="fa-solid fa-gear"></i>
+            </div>
+        </div>
+
+        <!-- Workspaces Container -->
+        <div id="workspaces-container" class="flex-grow-1 d-flex position-relative overflow-hidden">
+            <!-- Workspace 1: Code IDE -->
+            <div id="workspace-ide" class="d-flex w-100 h-100 active-workspace">
+                
+                <!-- Floating Sidebar -->
+        <aside class="glass-panel sidebar d-flex flex-column m-3 ms-2 me-2">
+            <!-- Brand Logo -->
+            <div class="sidebar-brand text-center p-4">
+                <img src="logo.svg" alt="Formatech Logo" height="45" style="width: auto; object-fit: contain;" onerror="this.style.display='none'">
+            </div>
+            
+            <!-- Views Container -->
+            <div id="views-container" class="flex-grow-1 overflow-hidden position-relative">
+                
+                <!-- Explorer View -->
+                <div id="explorer-view" class="view-panel active h-100 d-flex flex-column">
+                    <!-- Run Button -->
+            <div class="px-3 pb-3 border-bottom border-secondary border-opacity-25">
+                <button class="btn glass-btn w-100 mb-2" id="btn-run-project">
+                    <i class="fa-solid fa-play me-2"></i> <span data-i18n="run_project">Run Project</span>
+                </button>
+            </div>
+
+            <!-- Explorer Section -->
+            <div id="explorer-container" class="flex-grow-1 d-flex flex-column" style="min-height: 0;">
+                <div class="explorer-header d-flex justify-content-between align-items-center px-3 py-2">
+                    <div class="explorer-title"><i class="fa-solid fa-folder-tree me-2"></i><span data-i18n="explorer">EXPLORER</span></div>
+                    <div class="explorer-actions">
+                        <i class="fa-solid fa-floppy-disk action-icon" id="btn-save-fmtk" title="Save FormaTek Project (.fmtk)"></i>
+                        <i class="fa-solid fa-file-zipper action-icon" id="btn-export-zip" data-i18n-title="download_project" title="Export as ZIP"></i>
+                        <div class="border-start border-secondary opacity-50 mx-1 d-inline-block" style="height: 14px;"></div>
+                        <i class="fa-solid fa-file-circle-plus action-icon" id="btn-new-file" data-i18n-title="new_file" title="New File"></i>
+                        <i class="fa-solid fa-folder-plus action-icon" id="btn-new-folder" data-i18n-title="new_folder" title="New Folder"></i>
+                    </div>
+                </div>
+                    
+                    <!-- File Tree -->
+                    <div id="file-tree" class="flex-grow-1 overflow-auto px-3 pb-3">
+                        <!-- Files injected here via JS -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Extensions View -->
+            <div id="extensions-view" class="view-panel h-100 d-flex flex-column">
+                    <div class="explorer-header px-4 pt-3 mb-3">
+                        <div class="explorer-title text-uppercase"><i class="fa-solid fa-puzzle-piece me-1"></i> Extensions</div>
+                    </div>
+                    <div class="extensions-list flex-grow-1 overflow-auto px-3 pb-3" id="extensions-container">
+                        <!-- Extension Cards injected via JS -->
+                    </div>
+                </div>
+
+            </div>
+        </aside>
+
+        <!-- Main Workspace (Editor + Live Preview + Console) -->
+        <main class="workspace-area flex-grow-1 d-flex flex-column m-3 ms-0">
+            <!-- Top Split Area -->
+            <div class="top-split-area d-flex flex-grow-1 overflow-hidden" id="top-split-area">
+                
+                <!-- Editor Panel -->
+                <div class="glass-panel editor-panel d-flex flex-column" id="editor-panel" style="width: 100%;">
+                    <!-- Tabs -->
+                    <ul class="nav nav-tabs editor-tabs" id="editor-tabs">
+                        <!-- Tabs injected here via JS -->
+                    </ul>
+                    
+                    <!-- CodeMirror Container -->
+                    <div class="code-container flex-grow-1 position-relative">
+                        <!-- No file opened state -->
+                        <div id="no-file-screen" class="no-file-screen">
+                            <img src="logo.svg" height="100" style="opacity: 0.3; filter: drop-shadow(0 0 15px rgba(0, 242, 254, 0.4));" alt="">
+                            <p class="mt-4 text-light fw-semibold fs-5 text-center opacity-75" data-i18n="select_file_prompt">Select a file to start coding</p>
+                        </div>
+                        <textarea id="code-editor"></textarea>
+                    </div>
+                </div>
+
+                <!-- Resizer (Splitter) -->
+                <div class="resizer" id="resizer" style="display: none;" title="Drag to resize"></div>
+
+                <!-- Live Preview Panel (Hidden by default) -->
+                <div id="live-preview-panel" class="glass-panel preview-panel flex-column" style="display: none; width: 45%;">
+                    <div class="panel-header d-flex justify-content-between align-items-center px-3 py-2 border-bottom border-secondary border-opacity-25 bg-dark bg-opacity-25">
+                        <div class="text-light fs-6 fw-semibold"><i class="fa-solid fa-eye me-2 text-info"></i> <span data-i18n="live_preview">Live Preview</span></div>
+                        <div>
+                            <button class="btn btn-sm text-light opacity-50 hover-white me-2" id="btn-refresh-preview" title="Refresh"><i class="fa-solid fa-rotate-right"></i></button>
+                            <button class="btn btn-sm text-light opacity-50 hover-white" id="btn-close-preview" data-i18n-title="close_panel" title="Close Split"><i class="fa-solid fa-xmark"></i></button>
+                        </div>
+                    </div>
+                    <div class="preview-container flex-grow-1 bg-white position-relative">
+                        <iframe id="preview-frame" sandbox="allow-scripts allow-modals allow-same-origin" style="width: 100%; height: 100%; border: none; position: absolute; top: 0; left: 0;"></iframe>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bottom Console Panel (Hidden by default) -->
+            <div id="console-panel" class="glass-panel console-panel flex-column" style="display: none; height: 150px; border-top: 1px solid rgba(255,255,255,0.1);">
+                <div class="panel-header d-flex justify-content-between align-items-center px-3 py-2 border-bottom border-secondary border-opacity-25 bg-dark bg-opacity-50">
+                    <div class="text-light fs-6 fw-semibold"><i class="fa-solid fa-terminal me-2 text-warning"></i> <span data-i18n="dev_console">Developer Console</span></div>
+                    <div>
+                        <button class="btn btn-sm text-light opacity-50 hover-white me-2" id="btn-clear-console" data-i18n-title="clear_console" title="Clear Console"><i class="fa-solid fa-ban"></i></button>
+                        <button class="btn btn-sm text-light opacity-50 hover-white" id="btn-close-console" data-i18n-title="close_panel" title="Close Panel"><i class="fa-solid fa-xmark"></i></button>
+                    </div>
+                </div>
+                <div id="console-output" class="console-output flex-grow-1 overflow-auto p-3" style="font-family: 'Consolas', monospace; font-size: 13.5px;">
+                    <!-- Logs injected here -->
+                </div>
+            </div>
+
+            <!-- Status Bar -->
+            <div class="glass-panel status-bar d-flex justify-content-between px-4 py-2 mt-3" style="border-radius: 12px; height: 45px; align-items: center;">
+                <div id="status-left" class="d-flex align-items-center">
+                    <i class="fa-solid fa-circle-check text-success me-2" id="status-icon"></i> <span class="text-light opacity-75" id="status-text" data-i18n="ready">Ready</span>
+                    
+                    <!-- Console Toggle Button (Visible only if extension enabled) -->
+                    <span id="status-console-toggle" class="ms-4 text-light opacity-50 cursor-pointer hover-white" style="display: none; cursor: pointer;" title="Toggle Console Panel">
+                        <i class="fa-solid fa-terminal"></i> <span data-i18n="console">Console</span>
+                        <span id="console-error-count" class="badge bg-danger rounded-pill ms-1" style="display: none;">0</span>
+                    </span>
+                </div>
+                <div id="status-right" class="badge bg-primary rounded-pill px-3 py-1 text-uppercase" style="opacity: 0.8; font-weight: 600;">-</div>
+            </div>
+        </main>
+            </div> <!-- End Workspace IDE -->
+
+            <!-- Workspace 2: Logic Gates -->
+            <div id="workspace-logic" class="d-none w-100 h-100 d-flex flex-column">
+                <!-- Logic Tabs UI -->
+                <ul class="nav nav-tabs logic-tabs border-bottom-0 mt-2 px-3" id="logic-tabs-container" style="border-color: rgba(255,255,255,0.1);">
+                    <!-- Tabs will be injected here via JS -->
+                </ul>
+                <!-- Logic Toolbar -->
+                <div class="glass-panel p-2 mx-3 mb-0 d-flex flex-column gap-2 border-secondary border-opacity-25" style="border-radius: 8px;">
+                    <!-- Row 1: System Gates & Tools -->
+                    <div class="d-flex gap-2" style="flex-wrap: wrap; align-items: center;">
+                        <div class="d-flex gap-2" id="standard-gates-container">
+                            <button class="btn btn-sm btn-outline-info logic-gate-btn" data-type="AND"><i class="fa-solid fa-microchip me-1"></i> AND</button>
+                            <button class="btn btn-sm btn-outline-info logic-gate-btn" data-type="OR"><i class="fa-solid fa-microchip me-1"></i> OR</button>
+                            <button class="btn btn-sm btn-outline-info logic-gate-btn" data-type="NOT"><i class="fa-solid fa-microchip me-1"></i> NOT</button>
+                        </div>
+                        <div class="border-start border-secondary opacity-50 mx-1" style="height: 24px;"></div>
+                        <div class="d-flex gap-2">
+                            <button class="btn btn-sm btn-outline-warning logic-io-btn px-3" data-type="SWITCH" data-i18n-title="switch_input" title="Switch (Input)"><i class="fa-solid fa-toggle-on fa-lg"></i></button>
+                            <button class="btn btn-sm btn-outline-warning logic-io-btn px-3" data-type="LED" data-i18n-title="led_output" title="LED (Output)"><i class="fa-solid fa-lightbulb fa-lg"></i></button>
+                            <button class="btn btn-sm btn-outline-warning logic-io-btn px-3" data-type="CLOCK" data-i18n-title="clock_generator" title="Clock Generator"><i class="fa-solid fa-stopwatch fa-lg"></i></button>
+                            <button class="btn btn-sm btn-outline-warning logic-io-btn px-3" data-type="SEG7" data-i18n-title="seven_segment" title="7-Segment Display"><i class="fa-solid fa-7 fa-lg"></i></button>
+                        </div>
+                        <div class="ms-auto d-flex gap-2">
+                            <button class="btn btn-sm btn-info opacity-75 hover-white px-2" id="btn-print-logic" data-i18n-title="print_pdf" title="Print to PDF"><i class="fa-solid fa-print"></i></button>
+                            <button class="btn btn-sm btn-success opacity-75 hover-white px-2" id="btn-save-chip" data-i18n-title="save_chip" title="Save as Chip"><i class="fa-solid fa-box-archive"></i></button>
+                            <button class="btn btn-sm btn-danger opacity-75 hover-white px-2" id="btn-clear-logic" data-i18n-title="clear" title="Clear"><i class="fa-solid fa-trash"></i></button>
+                        </div>
+                    </div>
+                    <!-- Row 2: Custom Chips -->
+                    <div class="d-flex gap-2 align-items-center border-top border-secondary border-opacity-25 pt-2 mt-1" id="custom-chips-row">
+                        <span class="text-secondary small fw-bold text-uppercase ms-1 me-2" data-i18n="my_chips"><i class="fa-solid fa-microchip me-1"></i>My Chips:</span>
+                        <div class="d-flex gap-2" id="custom-chips-container" style="flex-wrap: wrap;">
+                            <!-- Custom chips buttons injected here -->
+                        </div>
+                    </div>
+                </div>
+                <!-- Logic Canvas Container -->
+                <div class="flex-grow-1 m-3 position-relative" style="background: #1e1e24; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05); overflow: hidden;">
+                    <!-- Canvas grid is drawn dynamically via JS now -->
+                    <canvas id="logic-canvas" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; cursor: crosshair;"></canvas>
+                </div>
+            </div>
+
+            <!-- Workspace 3: Circuits & Arduino -->
+            <div id="workspace-circuit" class="d-none w-100 h-100 p-3">
+                <div class="glass-panel w-100 h-100 d-flex flex-column align-items-center justify-content-center">
+                    <h1 class="text-light" style="font-size: 3rem;"><i class="fa-solid fa-bolt me-3 text-warning"></i><span data-i18n="workspace_circuit">Arduino Simulator</span></h1>
+                    <p class="text-secondary mt-3 fs-5" data-i18n="under_construction">This workspace is under construction and will be available soon...</p>
+                </div>
+            </div>
+        </div> <!-- End workspaces-container -->
+    </div>
+
+    <!-- Context Menu -->
+    <div class="context-menu" id="context-menu">
+        <div class="context-menu-item" id="ctx-preview" style="display: none;">
+            <i class="fa-solid fa-eye text-info"></i> <span data-i18n="preview_html">Preview HTML</span>
+        </div>
+        <div class="context-menu-item" id="ctx-format" style="display: none;">
+            <i class="fa-solid fa-code text-warning"></i> <span data-i18n="format_code">Format Code</span>
+        </div>
+        <div class="context-menu-item" id="ctx-rename">
+            <i class="fa-solid fa-pen text-primary"></i> <span data-i18n="rename">Rename</span>
+        </div>
+        <div class="context-menu-item text-danger" id="ctx-delete">
+            <i class="fa-solid fa-trash"></i> <span data-i18n="delete">Delete</span>
+        </div>
+    </div>
+
+    <!-- Toolbar Chip Context Menu -->
+    <div class="context-menu" id="toolbar-chip-context-menu" style="display: none; padding: 10px; width: 170px; z-index: 2000; position: absolute;">
+        <div class="context-menu-item" id="ctx-toolbar-edit">
+            <i class="fa-solid fa-wrench border-end border-secondary me-2 pe-2 text-primary"></i> <span data-i18n="edit_chip">Edit Chip</span>
+        </div>
+        <hr style="width: 100%; border-color: #444; margin: 5px 0;">
+        <div class="context-menu-item text-danger" id="ctx-toolbar-delete">
+            <i class="fa-solid fa-trash border-end border-secondary me-2 pe-2 text-danger"></i> <span data-i18n="delete_chip">Delete Chip</span>
+        </div>
+    </div>
+
+    <!-- Node Context Menu (Logic Simulator) -->
+    <div class="context-menu" id="node-context-menu" style="display: none; padding: 10px; width: 170px; z-index: 2000; position: absolute;">
+        <div class="context-menu-item" id="ctx-node-truthtable">
+            <i class="fa-solid fa-table border-end border-secondary me-2 pe-2 text-info"></i> <span data-i18n="truth_table">Truth Table</span>
+        </div>
+        <div class="context-menu-item" id="ctx-node-edit" style="display: none;">
+            <i class="fa-solid fa-wrench border-end border-secondary me-2 pe-2 text-primary"></i> <span data-i18n="edit_chip">Edit Chip</span>
+        </div>
+        <div class="context-menu-item" id="ctx-node-rename">
+            <i class="fa-solid fa-pen border-end border-secondary me-2 pe-2 text-warning"></i> <span data-i18n="rename_gate">Rename Gate / Pin</span>
+        </div>
+        <hr style="width: 100%; border-color: #444; margin: 5px 0;">
+        <div class="context-menu-item text-danger" id="ctx-node-delete">
+            <i class="fa-solid fa-trash border-end border-secondary me-2 pe-2"></i> <span data-i18n="delete">Delete Gate</span>
+        </div>
+    </div>
+
+    <!-- Wire Context Menu -->
+    <div class="context-menu" id="wire-context-menu" style="display: none; padding: 10px; flex-wrap: wrap; width: 140px; gap: 5px; z-index: 2000; position: absolute;">
+        <div style="width: 100%; margin-bottom: 5px; font-size: 12px; color: #aaa;" data-i18n="wire_color">Wire Color</div>
+        <div class="wire-color-btn" style="width: 25px; height: 25px; border-radius: 50%; cursor: pointer; background: #00f2fe;" data-color="#00f2fe"></div>
+        <div class="wire-color-btn" style="width: 25px; height: 25px; border-radius: 50%; cursor: pointer; background: #ff3366;" data-color="#ff3366"></div>
+        <div class="wire-color-btn" style="width: 25px; height: 25px; border-radius: 50%; cursor: pointer; background: #10b981;" data-color="#10b981"></div>
+        <div class="wire-color-btn" style="width: 25px; height: 25px; border-radius: 50%; cursor: pointer; background: #f59e0b;" data-color="#f59e0b"></div>
+        <div class="wire-color-btn" style="width: 25px; height: 25px; border-radius: 50%; cursor: pointer; background: #8b5cf6;" data-color="#8b5cf6"></div>
+        <div class="wire-color-btn" style="width: 25px; height: 25px; border-radius: 50%; cursor: pointer; background: #f97316;" data-color="#f97316"></div>
+        <div class="wire-color-btn" style="width: 25px; height: 25px; border-radius: 50%; cursor: pointer; background: #ffffff;" data-color="#ffffff"></div>
+        <hr style="width: 100%; border-color: #444; margin: 5px 0;">
+        <div class="context-menu-item text-danger" id="ctx-delete-wire" style="width: 100%; padding: 5px 10px;">
+            <i class="fa-solid fa-trash"></i> <span data-i18n="delete">Delete</span>
+        </div>
+    </div>
+
+    <!-- Truth Table Modal -->
+    <div class="modal fade glass-modal" id="truthTableModal" tabindex="-1">
+      <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content glass-panel border-0">
+            <div class="modal-header border-bottom border-secondary border-opacity-25">
+                <h5 class="modal-title text-light"><i class="fa-solid fa-table border-end border-secondary pe-2 me-2 text-info"></i> <span id="tt-modal-title">Truth Table</span></h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-dark table-hover table-bordered mb-0" style="background: transparent; text-align: center;">
+                        <thead id="tt-head">
+                            <!-- Headers generated here -->
+                        </thead>
+                        <tbody id="tt-body">
+                            <!-- Rows generated here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Settings Modal -->
+    <div class="modal fade glass-modal" id="settingsModal" tabindex="-1" aria-labelledby="settingsModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content glass-panel border-0">
+            <div class="modal-header border-bottom border-secondary border-opacity-25">
+                <h5 class="modal-title text-light" id="settingsModalLabel"><i class="fa-solid fa-gear text-primary me-2"></i> <span data-i18n="editor_settings">Editor Settings</span></h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-light">
+                
+                <div class="mb-3">
+                    <label class="form-label text-light opacity-75" data-i18n="language">Language</label>
+                    <select class="form-select glass-input text-light" id="setting-language">
+                        <option value="en" class="text-dark">English</option>
+                        <option value="ar" class="text-dark">العربية</option>
+                        <option value="fr" class="text-dark">Français</option>
+                    </select>
+                </div>
+
+                <div class="mb-3 border-top border-secondary border-opacity-25 pt-3">
+                    <label class="form-label text-light opacity-75" data-i18n="autocomplete">Code Suggestions (Autocomplete)</label>
+                    <select class="form-select glass-input text-light" id="setting-autocomplete">
+                        <option value="on" class="text-dark">On (Show suggestions while typing)</option>
+                        <option value="off" class="text-dark">Off (Manual coding only)</option>
+                    </select>
+                </div>
+                <div class="mb-3 border-top border-secondary border-opacity-25 pt-3">
+                    <label class="form-label text-light opacity-75" data-i18n="auto_close_tags">Auto Close Tags & Brackets</label>
+                    <select class="form-select glass-input text-light" id="setting-autoclose">
+                        <option value="on" class="text-dark">On (Automatically close &lt;tag&gt; and {brackets})</option>
+                        <option value="off" class="text-dark">Off (I will close them myself)</option>
+                    </select>
+                </div>
+                <div class="mb-3 border-top border-secondary border-opacity-25 pt-3">
+                    <label class="form-label text-light opacity-75" data-i18n="auto_save">Auto Save Mode</label>
+                    <select class="form-select glass-input text-light" id="setting-autosave-mode">
+                        <option value="instant" class="text-dark">Instant (Default)</option>
+                        <option value="delay" class="text-dark">Delayed (On Pause)</option>
+                        <option value="off" class="text-dark">Off (Manual Save only)</option>
+                    </select>
+                </div>
+                <div class="mb-3" id="delay-wrapper" style="display: none;">
+                    <label class="form-label text-light opacity-75" data-i18n="auto_save_delay">Delay Duration (ms)</label>
+                    <input type="number" class="form-control glass-input text-light" id="setting-autosave-delay" value="1000" min="500" step="100">
+                    <small class="text-muted">Time to wait after you stop typing before saving.</small>
+                </div>
+                <div id="manual-save-hint" style="display: none;" class="alert alert-warning bg-warning bg-opacity-10 border-warning border-opacity-25 text-warning py-2 mt-3">
+                    <i class="fa-solid fa-triangle-exclamation me-1"></i> Auto Save is off. You must click "Run Project" or use Ctrl+S to save your progress.
+                </div>
+                
+            </div>
+            <div class="modal-footer border-top border-secondary border-opacity-25">
+                <button type="button" class="btn btn-secondary bg-opacity-25" data-bs-dismiss="modal" data-i18n="cancel">Cancel</button>
+                <button type="button" class="btn btn-primary" id="btn-save-settings" data-i18n="save_settings">Save Settings</button>
+            </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Custom Prompt Modal -->
+    <div class="modal fade" id="customPromptModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-sm">
+            <div class="modal-content glass-panel" style="border: 1px solid rgba(0, 242, 254, 0.2);">
+                <div class="modal-header border-secondary border-opacity-25 pb-2">
+                    <h5 class="modal-title text-light fs-6" id="customPromptTitle">Enter value</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close" style="font-size: 0.8rem;"></button>
+                </div>
+                <div class="modal-body py-4">
+                    <input type="text" id="customPromptInput" class="form-control bg-dark text-light border-secondary" autocomplete="off" spellcheck="false" style="box-shadow: none;">
+                </div>
+                <div class="modal-footer border-secondary border-opacity-25 pt-2 pb-2">
+                    <button type="button" class="btn btn-sm btn-secondary bg-opacity-25 border-0" data-bs-dismiss="modal" data-i18n="cancel">Cancel</button>
+                    <button type="button" class="btn btn-sm btn-info px-4 text-dark fw-bold" id="customPromptConfirmBtn">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Custom Confirm Modal -->
+    <div class="modal fade" id="customConfirmModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-sm">
+            <div class="modal-content glass-panel" style="border: 1px solid rgba(255, 77, 77, 0.3);">
+                <div class="modal-header border-secondary border-opacity-25 pb-2">
+                    <h5 class="modal-title text-danger fs-6"><i class="fa-solid fa-triangle-exclamation me-2"></i><span id="customConfirmTitle">Are you sure?</span></h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close" style="font-size: 0.8rem;"></button>
+                </div>
+                <div class="modal-body py-3 text-light opacity-75 fs-6" id="customConfirmMessage">
+                    This action cannot be undone.
+                </div>
+                <div class="modal-footer border-secondary border-opacity-25 pt-2 pb-2">
+                    <button type="button" class="btn btn-sm btn-secondary bg-opacity-25 border-0" data-bs-dismiss="modal" data-i18n="cancel">Cancel</button>
+                    <button type="button" class="btn btn-sm btn-danger px-3 fw-bold" id="customConfirmYesBtn" data-i18n="delete">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.1/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.1/mode/xml/xml.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.1/mode/javascript/javascript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.1/mode/css/css.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.1/mode/htmlmixed/htmlmixed.min.js"></script>
+    
+    <!-- CodeMirror Addons -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.1/addon/edit/closebrackets.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.1/addon/edit/closetag.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.1/addon/hint/show-hint.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.1/addon/hint/xml-hint.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.1/addon/hint/html-hint.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.1/addon/hint/css-hint.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.1/addon/hint/javascript-hint.min.js"></script>
+    
+    <!-- CodeMirror Linting Dependencies -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jshint/2.13.6/jshint.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/csslint/1.0.5/csslint.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/htmlhint/1.1.13/htmlhint.min.js"></script>
+    
+    <!-- CodeMirror Lint Addons -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.1/addon/lint/lint.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.1/addon/lint/javascript-lint.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.1/addon/lint/css-lint.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.1/addon/lint/html-lint.min.js"></script>
+
+    <!-- JS Beautify -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-beautify/1.14.7/beautifier.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-beautify/1.14.7/beautify-html.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-beautify/1.14.7/beautify-css.min.js"></script>
+    
+    <!-- Custom Scripts -->
+    <script src="assets/js/i18n.js?v=28"></script>
+    <script src="assets/js/fileSystem.js?v=28"></script>
+    <script src="assets/js/extensions.js?v=28"></script>
+    <script src="assets/js/logic-simulator.js?v=28"></script>
+    <script src="assets/js/ide.js?v=28"></script>
+</body>
+</html>
