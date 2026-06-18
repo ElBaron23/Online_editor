@@ -1,0 +1,101 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 150 150" width="100%" height="100%">
+    <defs>
+        <linearGradient id="grad-cyan-blue" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#00f2fe" />
+            <stop offset="100%" stop-color="#4facfe" />
+        </linearGradient>
+        <linearGradient id="grad-purple-pink" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#7f00ff" />
+            <stop offset="100%" stop-color="#ec4899" />
+        </linearGradient>
+
+        <filter id="glow-heavy" x="-50%" y="-50%" width="200%" height="200%">
+            <feGaussianBlur stdDeviation="6" result="blur1" />
+            <feGaussianBlur stdDeviation="3" result="blur2" />
+            <feMerge>
+                <feMergeNode in="blur1" />
+                <feMergeNode in="blur2" />
+                <feMergeNode in="SourceGraphic" />
+            </feMerge>
+        </filter>
+    </defs>
+
+    <style>
+        <![CDATA[
+        .hex-bg {
+            stroke: url(#grad-purple-pink);
+            stroke-width: 2;
+            fill: #0b0e27;
+            fill-opacity: 0.65;
+        }
+        .hex-glow {
+            stroke: url(#grad-cyan-blue);
+            stroke-width: 1.5;
+            fill: none;
+            opacity: 0.4;
+        }
+        .logo-bracket-left {
+            stroke: url(#grad-cyan-blue);
+            stroke-width: 6;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            fill: none;
+        }
+        .logo-bracket-right {
+            stroke: url(#grad-purple-pink);
+            stroke-width: 5;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            fill: none;
+        }
+        .logo-stem {
+            stroke: url(#grad-cyan-blue);
+            stroke-width: 6;
+            stroke-linecap: round;
+            fill: none;
+        }
+        .logo-bar-top {
+            stroke: url(#grad-cyan-blue);
+            stroke-width: 6;
+            stroke-linecap: round;
+            fill: none;
+        }
+        .logo-bar-middle {
+            stroke: url(#grad-cyan-blue);
+            stroke-width: 6;
+            stroke-linecap: round;
+            fill: none;
+        }
+        .node-cyan { fill: #00f2fe; }
+        .node-purple { fill: #ec4899; }
+        ]]>
+    </style>
+
+    <g class="logo-emblem">
+        <!-- Glowing Hexagon Background Shadow -->
+        <polygon points="75,17 125,46 125,104 75,133 25,104 25,46" class="hex-glow" filter="url(#glow-heavy)" />
+        
+        <!-- Outer Hexagon -->
+        <polygon points="75,20 122.6,47.5 122.6,102.5 75,130 27.4,102.5 27.4,47.5" class="hex-bg" />
+
+        <!-- Vertical F Stem -->
+        <path d="M68,50 L68,100" class="logo-stem" />
+
+        <!-- Stylized Left Bracket < -->
+        <path d="M58,50 L44,75 L58,100" class="logo-bracket-left" />
+
+        <!-- F Bars -->
+        <path d="M68,50 L84,50" class="logo-bar-top" />
+        <path d="M68,75 L78,75" class="logo-bar-middle" />
+
+        <!-- Stylized Right Bracket > -->
+        <path d="M92,50 L106,75 L92,100" class="logo-bracket-right" />
+
+        <!-- Glowing Nodes (Circuits) -->
+        <circle cx="58" cy="50" r="4" class="node-cyan" />
+        <circle cx="58" cy="100" r="4" class="node-cyan" />
+        <circle cx="84" cy="50" r="4.5" class="node-cyan" />
+        <circle cx="78" cy="75" r="4.5" class="node-cyan" />
+        <circle cx="106" cy="75" r="4" class="node-purple" />
+    </g>
+</svg>

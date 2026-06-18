@@ -10,6 +10,10 @@ body {
     position: relative;
 }
 
+#root {
+    height: 100%;
+}
+
 /* Background animated orbs for glass effect depth */
 .bg-orb {
     position: absolute;
@@ -344,18 +348,12 @@ li.CodeMirror-hint-active {
     color: #00f2fe !important;
 }
 
-/* Activity Bar Hover Zone (Auto-hide logic) */
+/* Activity Bar Hover Zone (Now just keeps layout and position relative) */
 .activity-bar-hover-zone {
-    position: absolute;
-    left: 0;
-    top: 0;
-    bottom: 0;
-    width: 15px; /* Hit area */
-    z-index: 1000;
-    background: transparent;
-}
-.activity-bar-hover-zone:hover {
-    width: 48px; /* Expand hit area so it covers the activity bar when active */
+    width: 48px;
+    height: 100%;
+    position: relative;
+    z-index: 100;
 }
 
 /* Activity Bar */
@@ -369,34 +367,7 @@ li.CodeMirror-hint-active {
     flex-shrink: 0;
     padding-top: 10px;
     padding-bottom: 10px;
-    transform: translateX(-100%);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.activity-bar-hover-zone:hover .activity-bar {
     transform: translateX(0);
-    box-shadow: 4px 0 15px rgba(0,0,0,0.5);
-}
-
-/* Optional tiny hint arrow when hidden */
-.activity-bar-hover-zone::after {
-    content: '\f105'; /* FontAwesome chevron-right */
-    font-family: "Font Awesome 6 Free";
-    font-weight: 900;
-    position: absolute;
-    left: 0;
-    top: 50%;
-    transform: translateY(-50%);
-    color: rgba(255,255,255,0.3);
-    font-size: 10px;
-    padding: 10px 3px;
-    background: rgba(255,255,255,0.05);
-    border-radius: 0 4px 4px 0;
-    transition: opacity 0.2s;
-    pointer-events: none;
-}
-.activity-bar-hover-zone:hover::after {
-    opacity: 0;
 }
 
 .activity-icon {

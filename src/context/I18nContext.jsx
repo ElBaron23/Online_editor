@@ -1,3 +1,5 @@
+import React, { createContext, useContext, useState, useEffect } from 'react';
+
 const translations = {
     en: {
         "run_project": "Run Project",
@@ -160,34 +162,38 @@ const translations = {
     }
 };
 
-function setLanguage(lang) {
-    if (!translations[lang]) return;
-    
-    // Change HTML dir for RTL support
-    if (lang === 'ar') {
-        document.documentElement.dir = 'rtl';
-        document.documentElement.lang = 'ar';
-    } else {
-        document.documentElement.dir = 'ltr';
-        document.documentElement.lang = lang;
-    }
+const I18nContext = createContext(null);
 
-    // Translate all elements with data-i18n attribute
-    document.querySelectorAll('[data-i18n]').forEach(el => {
-        const key = el.getAttribute('data-i18n');
-        if (translations[lang][key]) {
-            // If the element has child nodes (like icons), we only want to replace the text node
-            // But for simplicity, if it has inner HTML structure, it's better to structure the HTML
-            // so data-i18n is on a span containing just the text.
-            el.innerText = translations[lang][key];
-        }
-    });
+export function I18nProvider({ children }) {
+    const [language, setLanguageState] = useState(() => localStorage.getItem('ide_language') || 'en');
 
-    // Translate specific placeholders or title attributes if needed
-    document.querySelectorAll('[data-i18n-title]').forEach(el => {
-        const key = el.getAttribute('data-i18n-title');
-        if (translations[lang][key]) {
-            el.title = translations[lang][key];
+    const changeLanguage = (lang) => {
+        if (!translations[lang]) return;
+        setLanguageState(lang);
+        localStorage.setItem('ide_language', lang);
+    };
+
+    useEffect(() => {
+        if (language === 'ar') {
+            document.documentElement.dir = 'rtl';
+            document.documentElement.lang = 'ar';
+        } else {
+            document.documentElement.dir = 'ltr';
+            document.documentElement.lang = language;
         }
-    });
+    }, [language]);
+
+    const t = (key) => {
+        return translations[language]?.[key] || translations['en']?.[key] || key;
+    };
+
+    return (
+        <I18nContext.Provider value={{ language, changeLanguage, t }}>
+            {children}
+        </I18nContext.Provider>
+    );
+}
+
+export function useTranslation() {
+    return useContext(I18nContext);
 }

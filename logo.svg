@@ -87,9 +87,6 @@
             stroke-linecap: round;
             stroke-linejoin: round;
             fill: none;
-            stroke-dasharray: 200;
-            stroke-dashoffset: 200;
-            animation: draw-path 1.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
         }
 
         .logo-bracket-right {
@@ -98,9 +95,6 @@
             stroke-linecap: round;
             stroke-linejoin: round;
             fill: none;
-            stroke-dasharray: 100;
-            stroke-dashoffset: 100;
-            animation: draw-path 1.5s cubic-bezier(0.4, 0, 0.2, 1) 0.3s forwards;
         }
 
         .logo-stem {
@@ -108,9 +102,6 @@
             stroke-width: 6;
             stroke-linecap: round;
             fill: none;
-            stroke-dasharray: 100;
-            stroke-dashoffset: 100;
-            animation: draw-path 1.5s cubic-bezier(0.4, 0, 0.2, 1) 0.2s forwards;
         }
 
         .logo-bar-top {
@@ -118,9 +109,6 @@
             stroke-width: 6;
             stroke-linecap: round;
             fill: none;
-            stroke-dasharray: 50;
-            stroke-dashoffset: 50;
-            animation: draw-path 1.2s cubic-bezier(0.4, 0, 0.2, 1) 0.5s forwards;
         }
 
         .logo-bar-middle {
@@ -128,9 +116,6 @@
             stroke-width: 6;
             stroke-linecap: round;
             fill: none;
-            stroke-dasharray: 50;
-            stroke-dashoffset: 50;
-            animation: draw-path 1.2s cubic-bezier(0.4, 0, 0.2, 1) 0.6s forwards;
         }
 
         .node-cyan {
@@ -189,24 +174,24 @@
         <polygon points="75,20 122.6,47.5 122.6,102.5 75,130 27.4,102.5 27.4,47.5" class="hex-bg" />
 
         <!-- Vertical F Stem -->
-        <path d="M62,50 L62,100" class="logo-stem" />
+        <path d="M68,50 L68,100" class="logo-stem" />
 
-        <!-- Stylized Left Bracket forming F's spine -->
-        <path d="M82,45 L52,75 L82,105" class="logo-bracket-left" />
+        <!-- Stylized Left Bracket < -->
+        <path d="M58,50 L44,75 L58,100" class="logo-bracket-left" />
 
         <!-- F Bars -->
-        <path d="M62,50 L95,50" class="logo-bar-top" />
-        <path d="M62,75 L87,75" class="logo-bar-middle" />
+        <path d="M68,50 L84,50" class="logo-bar-top" />
+        <path d="M68,75 L78,75" class="logo-bar-middle" />
 
-        <!-- Stylized Right Bracket for balance -->
-        <path d="M96,62 L111,75 L96,88" class="logo-bracket-right" />
+        <!-- Stylized Right Bracket > -->
+        <path d="M92,50 L106,75 L92,100" class="logo-bracket-right" />
 
         <!-- Glowing Nodes (Circuits) -->
-        <circle cx="82" cy="45" r="4" class="node-cyan" />
-        <circle cx="82" cy="105" r="4" class="node-cyan" />
-        <circle cx="95" cy="50" r="4.5" class="node-cyan" />
-        <circle cx="87" cy="75" r="4.5" class="node-cyan" />
-        <circle cx="111" cy="75" r="3.5" class="node-purple" />
+        <circle cx="58" cy="50" r="4" class="node-cyan" />
+        <circle cx="58" cy="100" r="4" class="node-cyan" />
+        <circle cx="84" cy="50" r="4.5" class="node-cyan" />
+        <circle cx="78" cy="75" r="4.5" class="node-cyan" />
+        <circle cx="106" cy="75" r="4" class="node-purple" />
     </g>
 
     <!-- Group: Text (Formatek brand) -->
